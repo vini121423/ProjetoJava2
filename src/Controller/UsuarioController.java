@@ -24,9 +24,9 @@ public class UsuarioController {
         
         Usuario usuario = new Usuario(nomeusuario,senha);
         
-        Connection conexao;
+         
         try {
-            conexao = new Conexao().getConnection();
+            Connection conexao = new Conexao().getConnection();
             UsuarioDAO usuarioDao = new UsuarioDAO(conexao);
             usuarioDao.insert(usuario);
             
