@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class UsuarioDAO {
@@ -15,16 +16,22 @@ public class UsuarioDAO {
         this.connection = connection;
     }
     
-    public void insert(Usuario usuario) throws SQLException{
+    public Usuario insert(Usuario usuario) throws SQLException{
 
-     String sql = "insert into usuario(usuario,senha) values (?, ?);";
-     PreparedStatement statement = connection.prepareStatement(sql);
+     String sql = "insert into usuario(usuario,senha) values(?, ?);";
+     PreparedStatement statement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
      statement.setString(1, usuario.getUsuario());
      statement.setString(2, usuario.getSenha());
      statement.execute();
+     
+        ResultSet generatedKeys = statement.getGeneratedKeys();
             
-      
-            
+        if(generatedKeys.next()){
+            int id = generatedKeys.getInt("id");
+            usuario.setId(id);
+        } 
+        
+           return usuario; 
     
     }
     
